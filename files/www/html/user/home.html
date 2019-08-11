@@ -36,5 +36,33 @@
             </li>
         </ul>
     </nav>
+    <div style="width: 80%; margin: auto">
+        
+        <table class="table table-responsive table-bordered table-striped ">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        <strong>Title</strong>
+                    </th>
+                    <th>
+                        <strong>Content</strong>
+                    </th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                {{range .Art}}
+                <tr>
+                    <td scope="row">
+                        {{.Title}}
+                    </td>
+                    <td>
+                        {{.Content}}
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

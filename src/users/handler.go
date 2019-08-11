@@ -5,6 +5,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/ciplax/hacktiv8/finalproject/src/articles"
 	ss "github.com/ciplax/hacktiv8/finalproject/src/sessions"
 )
 
@@ -17,6 +18,7 @@ type Data struct {
 	Title    string
 	Username string
 	Message  string
+	Art      []articles.Article
 	Sess     ss.Sessions
 }
 
@@ -62,6 +64,7 @@ func (mdle *Module) handlerHomeRender(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles(templateHTMLPath + "home.html")
 	checkErr(err, "Failed to render home.html")
 
+	data.Art = mdle.getAllPublishedArticles()
 	data.Title = "Home"
 	data.Sess = ss.Sess
 

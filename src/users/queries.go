@@ -4,7 +4,8 @@ import "database/sql"
 
 //Queries store queries
 type Queries struct {
-	ValidateUser *sql.Stmt
+	ValidateUser            *sql.Stmt
+	GetAllPublishedArticles *sql.Stmt
 }
 
 func prepare(query string, db *sql.DB) *sql.Stmt {
@@ -17,7 +18,8 @@ func prepare(query string, db *sql.DB) *sql.Stmt {
 //NewQueries returns prepared queries
 func NewQueries(dbMaster, dbSlave *sql.DB) *Queries {
 	q := &Queries{
-		ValidateUser: prepare(cValidateUser, dbMaster),
+		ValidateUser:            prepare(cValidateUser, dbMaster),
+		GetAllPublishedArticles: prepare(cGetAllPublishedArticles, dbMaster),
 	}
 
 	return q
@@ -40,4 +42,14 @@ const (
 	WHERE
 		username = ?
 		AND password = ?;`
+	cGetAllPublishedArticles = `
+	SELECT 
+		article_id
+		, title
+		, content
+		, flag
+	FROM
+		articles
+	WHERE
+		flag = true;`
 )

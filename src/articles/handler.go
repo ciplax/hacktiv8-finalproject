@@ -19,6 +19,8 @@ type dataHTML struct {
 	Sess   ss.Sessions
 }
 
+var data dataHTML
+
 func (mdle *Module) handlerArticlesRender(w http.ResponseWriter, r *http.Request) {
 	if ss.Sess.SessionID == 0 {
 		http.Redirect(w, r, "/401", http.StatusSeeOther)
