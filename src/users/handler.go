@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	templateHTMLPath = "files/www/html/user/"
+	templateHTMLPath = "files/www/html/"
 )
 
 //Data stores html data
@@ -25,7 +25,7 @@ type Data struct {
 var data Data
 
 func (mdle *Module) handlerLoginRender(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles(templateHTMLPath + "login.html")
+	tmpl, err := template.ParseFiles(templateHTMLPath+"user/login.html", templateHTMLPath+"header.html", templateHTMLPath+"navbar.html")
 	checkErr(err, "Failed to render login.html")
 
 	data.Title = "Login"
@@ -61,7 +61,7 @@ func (mdle *Module) handlerLoginDo(w http.ResponseWriter, r *http.Request) {
 }
 
 func (mdle *Module) handlerHomeRender(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles(templateHTMLPath + "home.html")
+	tmpl, err := template.ParseFiles(templateHTMLPath+"user/home.html", templateHTMLPath+"header.html", templateHTMLPath+"navbar.html")
 	checkErr(err, "Failed to render home.html")
 
 	data.Art = mdle.getAllPublishedArticles()

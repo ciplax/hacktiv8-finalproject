@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	templateHTMLPath = "files/www/html/contact/"
+	templateHTMLPath = "files/www/html/"
 )
 
 //Data stores html data
@@ -22,7 +22,7 @@ type Data struct {
 var data Data
 
 func (mdle *Module) handlerContactUsRender(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles(templateHTMLPath + "contactus.html")
+	tmpl, err := template.ParseFiles(templateHTMLPath+"contact/contactus.html", templateHTMLPath+"header.html", templateHTMLPath+"navbar.html")
 	checkErr(err, "Failed to render contactus.html")
 	data.Title = "Contact Us"
 	data.Sess = ss.Sess
@@ -47,10 +47,11 @@ func (mdle *Module) handlerContactUsPOST(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		data.Error = err.Error()
 		mdle.handlerContactUsRender(w, r)
+		data.Error = ""
 	} else {
 		mdle.insertContactUs(cu)
-		data.Error = ""
 		data.Ok = "Form submitted succesfully"
-		http.Redirect(w, r, "/contactus", http.StatusSeeOther)
+		mdle.handlerContactUsRender(w, r)
+		data.Ok = ""
 	}
 }
