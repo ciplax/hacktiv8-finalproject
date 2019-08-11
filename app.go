@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/ciplax/hacktiv8/finalproject/src/aboutus"
 	"github.com/ciplax/hacktiv8/finalproject/src/articles"
 	"github.com/ciplax/hacktiv8/finalproject/src/config"
 	"github.com/ciplax/hacktiv8/finalproject/src/contactus"
@@ -31,6 +32,9 @@ func main() {
 
 	mdleContactUs := contactus.NewModule(conf)
 	contactus.RegisterRouters(mdleContactUs)
+
+	mdleAbout := aboutus.NewModule(conf)
+	aboutus.RegisterRouters(mdleAbout)
 
 	err := http.ListenAndServe(conf.Server.Port, nil)
 	if err != nil {
