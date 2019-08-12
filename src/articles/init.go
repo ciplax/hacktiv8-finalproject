@@ -58,6 +58,8 @@ func RegisterRouters(mdle *Module) {
 	http.HandleFunc("/articles/unpublish", mdle.handlerUnpublishArticle)
 	http.HandleFunc("/articles/new", mdle.handlerNewArticleRender)
 	http.HandleFunc("/articles/add", mdle.handlerAddArticle)
+	http.HandleFunc("/articles/edit", mdle.handlerEditArticleRender)
+	http.HandleFunc("/articles/edit/submit", mdle.handlerEditArticleDo)
 }
 
 func checkErr(err error, msg ...string) {

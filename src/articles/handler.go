@@ -57,6 +57,50 @@ func (mdle *Module) handlerDeleteArticle(w http.ResponseWriter, r *http.Request)
 	data.Ok = ""
 }
 
+func (mdle *Module) handlerEditArticleRender(w http.ResponseWriter, r *http.Request) {
+	if ss.Sess.SessionID == 0 {
+		http.Redirect(w, r, "/401", http.StatusSeeOther)
+	}
+
+	r.ParseForm()
+	id := strings.Join(r.Form["article_id"], "")
+	art := mdle.getArticleByID(id)
+	data.Values = []Article{art}
+
+	tmpl, err := template.ParseFiles(templateHTMLPath+"article/articles_edit.html", templateHTMLPath+"header.html", templateHTMLPath+"navbar.html")
+	checkErr(err)
+
+	err = tmpl.Execute(w, data)
+	checkErr(err)
+}
+
+func (mdle *Module) handlerEditArticleDo(w http.ResponseWriter, r *http.Request) {
+	if ss.Sess.SessionID == 0 {
+		http.Redirect(w, r, "/401", http.StatusSeeOther)
+	}
+
+	r.ParseForm()
+	artF := ArticleForm{
+		ArticleID:   r.Form["article_id"],
+		Title:       r.Form["title"],
+		Content:     r.Form["content"],
+		IsPublished: r.Form["published"],
+	}
+
+	art, err := artF.convertToArticle()
+	checkErr(err)
+
+	if err != nil {
+		data.Error = err.Error()
+		mdle.handlerNewArticleRender(w, r)
+		data.Error = ""
+	} else {
+		data.Ok = mdle.updateArticle(art)
+		http.Redirect(w, r, "/articles", http.StatusSeeOther)
+		data.Ok = ""
+	}
+
+}
 func (mdle *Module) handlerPublishArticle(w http.ResponseWriter, r *http.Request) {
 	if ss.Sess.SessionID == 0 {
 		http.Redirect(w, r, "/401", http.StatusSeeOther)

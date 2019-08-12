@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
     {{template "header" .}}
+    <style>
+        table,
+        td,
+        th {
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 <body>
     {{template "navbar" .}}
     <div style="width: 80%; margin: auto">
         
-        <table class="table table-responsive table-bordered table-striped ">
+        <table class="table table-responsive table-bordered table-striped" style="table-layout: auto">
             <thead class="thead-dark">
                 <tr>
                     <th>
@@ -48,6 +55,10 @@
                         {{end}}
                     </td>
                     <td>
+                        <form action="/articles/edit" method="post">
+                            <input type="hidden" name="article_id" value="{{.ArticleID}}">
+                            <input class="btn btn-info" type="submit" value="Edit">
+                        </form>
                         <form action="/articles/delete" method="post">
                             <input type="hidden" name="article_id" value="{{.ArticleID}}">
                             <input class="btn btn-danger" type="submit" value="Delete">

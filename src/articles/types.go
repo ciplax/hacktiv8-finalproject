@@ -15,6 +15,7 @@ type Article struct {
 
 //ArticleForm stores article from html forms
 type ArticleForm struct {
+	ArticleID   []string
 	Title       []string
 	Content     []string
 	IsPublished []string
@@ -22,7 +23,11 @@ type ArticleForm struct {
 
 func (artF *ArticleForm) convertToArticle() (Article, error) {
 	art := Article{}
-	art.ArticleID = "0"
+
+	if len(artF.Title) == 0 || strings.Join(artF.Title, "") == "" {
+		art.ArticleID = "0"
+	}
+	art.ArticleID = strings.Join(artF.ArticleID, "")
 
 	if len(artF.Title) == 0 || strings.Join(artF.Title, "") == "" {
 		return Article{}, errors.New("Title cannot be empty")

@@ -9,6 +9,8 @@ type Queries struct {
 	PublishArticle   *sql.Stmt
 	UnpublishArticle *sql.Stmt
 	InsertArticle    *sql.Stmt
+	GetArticleByID   *sql.Stmt
+	UpdateArticle    *sql.Stmt
 }
 
 func prepare(query string, db *sql.DB) *sql.Stmt {
@@ -26,6 +28,8 @@ func NewQueries(dbMaster, dbSlave *sql.DB) *Queries {
 		PublishArticle:   prepare(cPublishArticle, dbMaster),
 		UnpublishArticle: prepare(cUnpublishArticle, dbMaster),
 		InsertArticle:    prepare(cInsertArticle, dbMaster),
+		GetArticleByID:   prepare(cGetArticleByID, dbMaster),
+		UpdateArticle:    prepare(cUpdateArticle, dbMaster),
 	}
 
 	return q
@@ -40,6 +44,25 @@ const (
 		, flag
 	FROM
 		articles;`
+	cGetArticleByID = `
+	SELECT 
+		article_id
+		, title
+		, content
+		, flag
+	FROM
+		articles
+	WHERE
+		article_id = ?;`
+	cUpdateArticle = `
+	UPDATE
+		articles
+	SET 
+		title = ?
+		, content = ?
+		, flag = ?
+	WHERE
+		article_id = ?;`
 	cDeleteArticle = `
 	DELETE
 	FROM
